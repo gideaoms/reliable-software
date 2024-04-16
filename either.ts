@@ -26,10 +26,6 @@ export function isRight<R, L = never>(value: Result<L, R>): value is Right<R> {
   return value._tag === "Right";
 }
 
-function unhandled(_value: never) {
-  throw new Error("It should not get here");
-}
-
 export function match<L, R, U>(
   matchable: Result<L, R>,
   handler: {
@@ -43,5 +39,6 @@ export function match<L, R, U>(
   if (isRight(matchable)) {
     return handler["Right"](matchable.value);
   }
-  return unhandled(matchable);
+  const _exhaustive: never = matchable;
+  throw new Error(`${matchable} is not known`);
 }
