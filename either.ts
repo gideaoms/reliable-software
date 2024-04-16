@@ -27,18 +27,18 @@ export function isRight<R, L = never>(value: Result<L, R>): value is Right<R> {
 }
 
 export function match<L, R, U>(
-  matchable: Result<L, R>,
-  handler: {
+  input: Result<L, R>,
+  matches: {
     Left: (value: Left<L>["value"]) => U;
     Right: (value: Right<R>["value"]) => U;
   }
 ) {
-  if (isLeft(matchable)) {
-    return handler["Left"](matchable.value);
+  if (isLeft(input)) {
+    return matches["Left"](input.value);
   }
-  if (isRight(matchable)) {
-    return handler["Right"](matchable.value);
+  if (isRight(input)) {
+    return matches["Right"](input.value);
   }
-  const _exhaustive: never = matchable;
-  throw new Error(`${matchable} is not known`);
+  const _exhaustive: never = input;
+  throw new Error(`${input} is not known`);
 }
